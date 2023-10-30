@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const KC = useKC()
+</script>
+
 <template>
   <div class="text-right">
     <span class="me-10">
@@ -13,7 +17,7 @@
       <NuxtLink to="/pricing">Pricing</NuxtLink>
     </span>
     <v-btn class="bg-blue">
-      Log in with Google
+      <NuxtLink to="/app">Log in with Google</NuxtLink>
     </v-btn>
   </div>
 
