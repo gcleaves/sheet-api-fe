@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const KC = useKC()
+const runtimeConfig = useRuntimeConfig();
+
+onMounted(() => {})
+
 </script>
 
 <template>
@@ -16,9 +19,8 @@ const KC = useKC()
     <span class="me-10">
       <NuxtLink to="/pricing">Pricing</NuxtLink>
     </span>
-    <v-btn class="bg-blue">
-      <NuxtLink to="/app">Log in with Google</NuxtLink>
+    <v-btn color="blue-darken-2" :href="runtimeConfig.public.apiBase+'/login'">
+      Log in with Google
     </v-btn>
   </div>
-
 </template>

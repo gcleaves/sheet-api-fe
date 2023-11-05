@@ -1,31 +1,20 @@
 <script setup lang="ts">
-import Keycloak from 'keycloak-js';
 
-const KC = useKC();
-let keycloak;
+import {navigateTo} from "nuxt/app";
+
+const config = useRuntimeConfig();
+const route = useRoute()
+
+const { data, pending, error, refresh } = await useFetch('/login/check');
+console.log('user', data.value);
+console.log('error', error.value);
+if(! data?.value?.sub) {
+  navigateTo('/');
+}
 
 onMounted(async () => {
-  keycloak = new Keycloak({
-    url: 'https://previacita.online/auth',
-    realm: 'cita',
-    clientId: 'sheet-public'
-  });
-  try {
-    const authenticated = await keycloak.init({
-      onLoad: 'login-required',
-      checkLoginIframe: false
-    });
-    console.log(`User is ${authenticated ? 'authenticated' : 'not authenticated'}`);
-    console.log(keycloak.tokenParsed);
-    KC.value.email = keycloak.tokenParsed.email;
-    KC.value.name = keycloak.tokenParsed.name;
-    KC.value.authenticated = authenticated;
 
-    //const logoutEndpoint = keycloak.logout()
 
-  } catch (error) {
-    console.error('Failed to initialize adapter:', error);
-  }
 })
 
 </script>
@@ -33,10 +22,13 @@ onMounted(async () => {
 <template>
   <v-layout class="rounded rounded-md">
     <v-app-bar title="Sheety API">
-      <v-list class="d-flex">
-        <v-list-item>Item 1</v-list-item>
-        <v-list-item @click="keycloak.logout({redirectUri:'http://localhost:3333'})">Logout</v-list-item>
-      </v-list>
+      <v-btn>
+        Item 1
+      </v-btn>
+      <v-btn href="/logout?redirect=/">
+        Logout
+      </v-btn>
+
     </v-app-bar>
 
     <v-navigation-drawer>
