@@ -21,6 +21,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/login': { redirect: 'http://localhost:3000/login' },
+    '/app': { redirect: '/app/sheets' },
     '/logout': { proxy: 'http://localhost:3000/logout' },
     '/login/check': { proxy: 'http://localhost:3000/login/check' },
     '/httpbin/**': { proxy: 'http://httpbin.org/**'},

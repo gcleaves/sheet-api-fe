@@ -1,7 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'app'
+  layout: 'app',
 })
+const { data, pending, error, refresh } = await useFetch('/api/sheets')
 </script>
 
 <template>

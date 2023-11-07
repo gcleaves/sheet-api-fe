@@ -9,13 +9,10 @@ const { data, pending, error, refresh } = await useFetch('/login/check');
 console.log('user', data.value);
 console.log('error', error.value);
 if(! data?.value?.sub) {
-  navigateTo('/');
+  navigateTo('/sheets');
 }
 
-onMounted(async () => {
-
-
-})
+onMounted(async () => {})
 
 </script>
 
@@ -28,13 +25,12 @@ onMounted(async () => {
       <v-btn href="/logout?redirect=/">
         Logout
       </v-btn>
-
     </v-app-bar>
 
     <v-navigation-drawer>
       <v-list>
         <v-list-item>
-          <NuxtLink to="/app">Sheets</NuxtLink>
+          <NuxtLink to="/app/sheets">Sheets</NuxtLink>
         </v-list-item>
         <v-list-item>
           <NuxtLink to="/app/settings">Settings</NuxtLink>
@@ -46,7 +42,7 @@ onMounted(async () => {
     </v-navigation-drawer>
 
     <v-main classX="d-flex align-center justify-center" style="min-height: 300px;">
-      <NuxtPage />
+      <NuxtPage keepalive />
     </v-main>
   </v-layout>
 </template>

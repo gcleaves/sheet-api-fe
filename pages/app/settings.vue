@@ -1,10 +1,15 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'app'
+  layout: 'app',
+
 })
-const { data, pending, error, refresh } = await useFetch('/api/settings')
-const user = ref(data);
 const items = ['service_account', 'oauth'];
+const { data, pending, error, refresh } = await useFetch('/api/settings')
+let temp = "{}";
+try {
+  temp = JSON.stringify(data.value.service_accounts[0].json);
+} catch (e) {}
+const saJSON = ref(temp);
 
 </script>
 
@@ -12,13 +17,13 @@ const items = ['service_account', 'oauth'];
   <h1>Settings</h1>
   <div v-if="data">
     <v-text-field
-        :model-value="data.name"
+        v-model="data.name"
         variant="outlined"
         label="Name"
         disabled
     ></v-text-field>
     <v-text-field
-        :model-value="user.email"
+        :model-value="data.email"
         variant="outlined"
         label="Email"
         disabled
@@ -26,15 +31,15 @@ const items = ['service_account', 'oauth'];
 
     <v-select
         label="Access method"
-        v-model="user.access_method"
+        v-model="data.access_method"
         :items="items"
     ></v-select>
 
-    <div v-if="user.access_method==='service_account'">
-      <v-text-field
+    <div v-if="data.access_method==='service_account'">
+      <v-textarea
           label="Service account"
-          v-model="user.service_account"
-      ></v-text-field>
+          v-model="saJSON"
+      ></v-textarea>
     </div>
     <div v-else>
       <v-btn class="mr-6" color="green-darken-2">
