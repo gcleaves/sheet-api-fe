@@ -4,12 +4,25 @@ definePageMeta({
 
 })
 const items = ['service_account', 'oauth'];
-const { data, pending, error, refresh } = await useFetch('/api/settings')
+let { data, pending, error, refresh } = await useFetch('/api/settings')
 let temp = "{}";
 try {
-  temp = JSON.stringify(data.value.service_accounts[0].json);
+  temp = JSON.stringify(data.value.service_account);
 } catch (e) {}
 const saJSON = ref(temp);
+const alertTitle = ref('');
+
+async function updateSettings() {
+  error.value = null;
+  alertTitle.value = '';
+  $fetch('/api/settings', {
+    method: 'PATCH',
+    body: { access_method: data.value.access_method, service_account: saJSON.value}
+  }).catch(err => {
+    alertTitle.value = 'Save error!'
+    error.value = err.data
+  });
+}
 
 </script>
 
@@ -41,7 +54,7 @@ const saJSON = ref(temp);
           v-model="saJSON"
       ></v-textarea>
     </div>
-    <div v-else>
+    <div class="mb-4" v-else>
       <v-btn class="mr-6" color="green-darken-2">
         Grant Oauth Permissions
       </v-btn>
@@ -52,11 +65,26 @@ const saJSON = ref(temp);
 
     </div>
   </div>
-  <div v-if="error">
-    {{ error }}
-    <v-btn color="blue-darken-2" href="/login">
-      Log in with Google
-    </v-btn>
-  </div>
+
+  <v-btn
+      class="mr-6"
+      color="blue"
+      @click="updateSettings()"
+  >
+    Save
+  </v-btn>
+
+  <v-alert
+      density="compact"
+      :closable="true"
+      :title="alertTitle"
+      v-if="error"
+      class="mt-2"
+      type="warning"
+  >
+      {{ error }}
+    <!--v-btn color="blue-darken-2" href="/login">Log in with Google</v-btn-->
+  </v-alert>
+
 
 </template>
