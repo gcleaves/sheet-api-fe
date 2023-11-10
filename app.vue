@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid class="pl-10 pr-10">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

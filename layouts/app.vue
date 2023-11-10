@@ -4,12 +4,13 @@ import {navigateTo} from "nuxt/app";
 
 const config = useRuntimeConfig();
 const route = useRoute()
+const drawer = ref(false);
 
 const { data, pending, error, refresh } = await useFetch('/login/check');
-console.log('user', data.value);
-console.log('error', error.value);
+//console.log('user', data.value);
+if(error.value) console.log('error', error.value);
 if(! data?.value?.sub) {
-  navigateTo('/sheets');
+  navigateTo('/');
 }
 
 onMounted(async () => {})
@@ -18,7 +19,10 @@ onMounted(async () => {})
 
 <template>
   <v-layout class="rounded rounded-md">
-    <v-app-bar title="Sheety API">
+    <v-app-bar>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Sheets API</v-toolbar-title>
+
       <v-btn>
         Item 1
       </v-btn>
@@ -27,7 +31,11 @@ onMounted(async () => {})
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer>
+    <v-navigation-drawer
+        :width="160"
+        v-model="drawer"
+        mobile-breakpoint='md'
+    >
       <v-list>
         <v-list-item>
           <NuxtLink to="/app/sheets">Sheets</NuxtLink>
@@ -41,8 +49,8 @@ onMounted(async () => {})
       </v-list>
     </v-navigation-drawer>
 
-    <v-main classX="d-flex align-center justify-center" style="min-height: 300px;">
-      <NuxtPage keepalive />
+    <v-main style="min-height: 300px;">
+      <NuxtPage />
     </v-main>
   </v-layout>
 </template>

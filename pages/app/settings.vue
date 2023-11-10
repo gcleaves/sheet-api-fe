@@ -11,14 +11,19 @@ try {
 } catch (e) {}
 const saJSON = ref(temp);
 const alertTitle = ref('');
+const errorContents = ref('');
 
 async function updateSettings() {
   error.value = null;
   alertTitle.value = '';
+  errorContents.value = '';
   $fetch('/api/settings', {
     method: 'PATCH',
     body: { access_method: data.value.access_method, service_account: saJSON.value}
   }).catch(err => {
+    if(err.status===401) {
+      errorContents.value = "<a href='/login'>Login</a>"
+    }
     alertTitle.value = 'Save error!'
     error.value = err.data
   });
@@ -81,8 +86,9 @@ async function updateSettings() {
       v-if="error"
       class="mt-2"
       type="warning"
+      :text="JSON.stringify(error)"
   >
-      {{ error }}
+    <div v-html="errorContents"></div>
     <!--v-btn color="blue-darken-2" href="/login">Log in with Google</v-btn-->
   </v-alert>
 
