@@ -4,10 +4,10 @@ definePageMeta({
   layout: 'app',
 })
 const route = useRoute();
-//const sheets = useSheets();
-//const sheet = sheets.value.find(s => s.id==route.params.id)
+const updateSheets = useUpdateSheets();
 const { data, pending, error, refresh } = await useFetch('/api/sheets/'+route.params.id);
 const sheet = data.value;
+updateSheets.value = false;
 </script>
 
 <template>

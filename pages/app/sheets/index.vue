@@ -1,23 +1,28 @@
 <script setup lang="ts">
-
-import {onMounted} from "vue";
-
 definePageMeta({
   layout: 'app',
 })
+
 const sheetItems = ref([]);
+const updateSheets = useUpdateSheets();
+const sheets = useSheets();
 
 onMounted(async () => {
-  const data = await $fetch('/api/sheets');
-  for(let k = data.length-1; k>=0; k-- ) {
+  if(updateSheets.value) {
+    sheets.value = await $fetch('/api/sheets');
+  } else {
+    updateSheets.value = true;
+  }
+
+  for(let k = sheets.value.length-1; k>=0; k-- ) {
     sheetItems.value.push({
-      title: data[k].name,
-      subtitle: data[k].sheet_id,
-      value: data[k].id,
+      title: sheets.value[k].name,
+      subtitle: sheets.value[k].sheet_id,
+      value: sheets.value[k].id,
       class: 'ma-3',
       //href: '/app/sheets/'+data.value[k].id,
       onclick: ()=>{
-        navigateTo('/app/sheets/'+data[k].id)
+        navigateTo('/app/sheets/'+sheets.value[k].id)
       }
     });
     if(k) sheetItems.value.push({type:'divider'});
