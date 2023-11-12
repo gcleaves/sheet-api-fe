@@ -3,6 +3,8 @@ definePageMeta({
   layout: 'app',
 
 })
+const snackbar = ref(false);
+let snackbarText;
 const items = ['service_account', 'oauth'];
 let { data, pending, error, refresh } = await useFetch('/api/settings')
 let temp = "{}";
@@ -14,24 +16,28 @@ const alertTitle = ref('');
 const errorContents = ref('');
 
 async function updateSettings() {
-  error.value = null;
-  alertTitle.value = '';
-  errorContents.value = '';
-  $fetch('/api/settings', {
-    method: 'PATCH',
-    body: { access_method: data.value.access_method, service_account: saJSON.value}
-  }).catch(err => {
-    if(err.status===401) {
-      errorContents.value = "<a href='/login'>Login</a>"
-    }
-    alertTitle.value = 'Save error!'
-    error.value = err.data
-  });
+  try {
+    await $fetch('/api/settings', {
+      method: 'PATCH',
+      body: { access_method: data.value.access_method, service_account: saJSON.value, user_id: data.value.id}
+    })
+    snackbarText = 'Saved!'
+    snackbar.value = true;
+  } catch (e) {
+    snackbarText = 'Error!'
+    snackbar.value = true;
+  }
+}
+
+async function elevateAccess() {
+  await $fetch('/getAccessLink')
+      .then((link) => window.location.href = link);
 }
 
 </script>
 
 <template>
+  <v-sheet width="800">
   <h1>Settings</h1>
   <div v-if="data">
     <v-text-field
@@ -60,7 +66,8 @@ async function updateSettings() {
       ></v-textarea>
     </div>
     <div class="mb-4" v-else>
-      <v-btn class="mr-6" color="green-darken-2">
+
+      <v-btn @click="elevateAccess" class="mr-6" color="green-darken-2">
         Grant Oauth Permissions
       </v-btn>
 
@@ -72,25 +79,27 @@ async function updateSettings() {
   </div>
 
   <v-btn
-      class="mr-6"
-      color="blue"
+      class="mr-6 bg-primary"
       @click="updateSettings()"
   >
-    Save
+    Submit
   </v-btn>
 
-  <v-alert
-      density="compact"
-      :closable="true"
-      :title="alertTitle"
-      v-if="error"
-      class="mt-2"
-      type="warning"
-      :text="JSON.stringify(error)"
+  <v-snackbar
+      v-model="snackbar"
+      :timeout="4000"
   >
-    <div v-html="errorContents"></div>
-    <!--v-btn color="blue-darken-2" href="/login">Log in with Google</v-btn-->
-  </v-alert>
+    {{ snackbarText }}
 
-
+    <template v-slot:actions>
+      <v-btn
+          color="blue"
+          variant="text"
+          @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
+  </v-sheet>
 </template>

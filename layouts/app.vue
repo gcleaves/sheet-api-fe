@@ -22,10 +22,6 @@ onMounted(async () => {})
     <v-app-bar>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Sheets API</v-toolbar-title>
-
-      <v-btn>
-        Item 1
-      </v-btn>
       <v-btn href="/logout?redirect=/">
         Logout
       </v-btn>
@@ -37,14 +33,14 @@ onMounted(async () => {})
         mobile-breakpoint='md'
     >
       <v-list>
-        <v-list-item>
-          <NuxtLink to="/app/sheets">Sheets</NuxtLink>
+        <v-list-item to="/app/sheets">
+          Sheets
         </v-list-item>
-        <v-list-item>
-          <NuxtLink to="/app/settings">Settings</NuxtLink>
+        <v-list-item to="/app/settings">
+          Settings
         </v-list-item>
-        <v-list-item>
-          <NuxtLink to="/app/billing">Billing</NuxtLink>
+        <v-list-item to="/app/billing">
+          Billing
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

@@ -8,7 +8,7 @@ const updateSheets = useUpdateSheets();
 const sheets = useSheets();
 
 onMounted(async () => {
-  if(updateSheets.value) {
+  if(1) {
     sheets.value = await $fetch('/api/sheets');
   } else {
     updateSheets.value = true;
@@ -27,17 +27,17 @@ onMounted(async () => {
     });
     if(k) sheetItems.value.push({type:'divider'});
   }
-
 })
 
 </script>
 
 <template>
+  <v-sheet width="800">
   <h1>Sheets</h1>
+  <v-btn block to="/app/sheets/new" class="mb-3 bg-primary">New</v-btn>
   <v-card>
     <v-list lines="'two'" :items="sheetItems" item-props></v-list>
-    <!--NuxtLink v-for="i in sheetItems" :to="'/app/sheets/'+i.value">{{ i.title }}</NuxtLink-->
   </v-card>
-
+  </v-sheet>
 
 </template>

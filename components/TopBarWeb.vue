@@ -19,9 +19,6 @@ onMounted(() => {})
     <span class="me-10">
       <NuxtLink to="/pricing">Pricing</NuxtLink>
     </span>
-    <span class="me-10">
-      <NuxtLink to="/test">test</NuxtLink>
-    </span>
     <v-btn color="blue-darken-2" :href="runtimeConfig.public.apiBase+'/login'">
       Log in with Google
     </v-btn>
