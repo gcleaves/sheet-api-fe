@@ -65,12 +65,10 @@ async function elevateAccess() {
           v-model="saJSON"
       ></v-textarea>
     </div>
-    <div class="mb-4" v-else>
-
+    <div class="mb-4 d-flex justify-center" v-else>
       <v-btn @click="elevateAccess" class="mr-6" color="green-darken-2">
         Grant Oauth Permissions
       </v-btn>
-
       <v-btn color="red-darken-2">
         Revoke Oauth Permissions
       </v-btn>
@@ -78,8 +76,8 @@ async function elevateAccess() {
     </div>
   </div>
 
-  <v-btn
-      class="mr-6 bg-primary"
+  <v-btn block
+      class="mt-6 bg-primary"
       @click="updateSettings()"
   >
     Submit
