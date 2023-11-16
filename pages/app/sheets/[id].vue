@@ -2,8 +2,6 @@
 definePageMeta({
   layout: 'app',
 })
-const route = useRoute();
-//console.log("geoff")
 </script>
 
 <template>

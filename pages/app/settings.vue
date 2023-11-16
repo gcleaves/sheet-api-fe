@@ -3,17 +3,23 @@ definePageMeta({
   layout: 'app',
 
 })
+let temp = "{}";
+const saJSON = ref(temp);
+const timeout = ref(4000);
 const snackbar = ref(false);
 let snackbarText;
 const items = ['service_account', 'oauth'];
-let { data, pending, error, refresh } = await useFetch('/api/settings')
-let temp = "{}";
+let { data, pending, error, refresh } = await useFetch('/api/settings');
+if(error) {
+  snackbarText = error.value;
+  timeout.value = 10000;
+  snackbar.value = true;
+}
+
 try {
   temp = JSON.stringify(data.value.service_account);
 } catch (e) {}
-const saJSON = ref(temp);
-const alertTitle = ref('');
-const errorContents = ref('');
+
 
 async function updateSettings() {
   try {
@@ -85,7 +91,7 @@ async function elevateAccess() {
 
   <v-snackbar
       v-model="snackbar"
-      :timeout="4000"
+      :timeout="timeout"
   >
     {{ snackbarText }}
 

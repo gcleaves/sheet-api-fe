@@ -115,7 +115,7 @@ function ondel() {
           @timerExpired="deleteSheet()"
           btClass="mt-2 bg-amber block"
           text="Delete"
-          timer="3"
+          :timer="3"
       ></ConfirmedDeleteButton>
     </v-form>
   </v-sheet>
