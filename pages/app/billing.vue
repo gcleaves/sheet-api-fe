@@ -6,5 +6,5 @@ definePageMeta({
 
 <template>
   <h1>Billing</h1>
-  <p>Pay up!</p>
+  <p>It's free!</p>
 </template>
