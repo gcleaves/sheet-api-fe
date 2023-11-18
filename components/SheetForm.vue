@@ -107,7 +107,7 @@ const rules = {
         validate-on="input"
     >
       <v-card class="pl-4 py-2 mb-2" v-if="sheet.uid">
-        Endpoint: <b> {{ sheet.uid }} </b>
+        Endpoint: <b> /api/sheet/{{ sheet.uid }} </b>
       </v-card>
 
       <v-text-field

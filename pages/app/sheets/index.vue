@@ -5,7 +5,6 @@ definePageMeta({
 const timeout = ref(4000);
 const snackbar = ref(false);
 let snackbarText;
-const sheetItems = ref([]);
 const updateSheets = useUpdateSheets();
 const sheets = useSheets();
 
@@ -22,19 +21,6 @@ onMounted(async () => {
     updateSheets.value = true;
   }
 
-  for(let k = sheets.value.length-1; k>=0; k-- ) {
-    sheetItems.value.push({
-      title: sheets.value[k].name,
-      subtitle: sheets.value[k].uid,
-      value: sheets.value[k].id,
-      class: 'ma-2',
-      //href: '/app/sheets/'+data.value[k].id,
-      onclick: ()=>{
-        navigateTo('/app/sheets/'+sheets.value[k].id)
-      }
-    });
-    if(k) sheetItems.value.push({type:'divider'});
-  }
 })
 
 </script>
@@ -43,7 +29,7 @@ onMounted(async () => {
   <v-sheet max-width="600">
   <h1>Sheets</h1>
   <v-btn block to="/app/sheets/new" class="mb-3 bg-primary">New</v-btn>
-  <v-card :text="sheetItems.length ? null : 'Click New to add Sheets'">
+  <v-card :text="sheets.length ? null : 'Click New to add Sheets'">
     <v-list>
       <template v-for="(sheet, i) in sheets">
         <v-list-item

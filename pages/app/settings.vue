@@ -49,7 +49,7 @@ async function removeAccess() {
 </script>
 
 <template>
-  <v-sheet max-width="800">
+  <v-sheet max-width="600">
   <h1>Settings</h1>
   <div v-if="data">
     <v-text-field
