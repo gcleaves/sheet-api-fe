@@ -37,8 +37,8 @@ if(! data?.value?.sub) {
         <v-list-item to="/app/settings">
           Settings
         </v-list-item>
-        <v-list-item to="/app/billing">
-          Billing
+        <v-list-item to="/app/docs">
+          Docs
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

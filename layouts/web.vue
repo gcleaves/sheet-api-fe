@@ -34,19 +34,25 @@ const showDrawer = ref(false);
       ></v-app-bar-nav-icon>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="showDrawer" :width="213" location="end">
-
+    <v-navigation-drawer
+        v-model="showDrawer"
+        :width="213"
+        location="end"
+        disable-resize-watcher
+    >
       <v-list-item to="/" title="Home"></v-list-item>
       <v-list-item href="/#pricing" title="Pricing"></v-list-item>
       <v-list-item link to="/docs" title="Docs"></v-list-item>
     </v-navigation-drawer>
 
     <v-main>
+      <v-container>
       <div v-if="router.currentRoute.value.name!=='docs'">
         <v-sheet>
           <h1>API access to your Google Sheets</h1>
           <h3>With (some) Privacy!</h3>
-          <p><a href="https://github.com/gcleaves/sheet-api-be">Open source</a> code that converts your Google Sheet into an easy-to-consume REST API.</p>
+          <p class="mt-2"><a href="https://github.com/gcleaves/sheet-api-be">Open source</a> code that converts your Google Sheet
+            into an easy-to-consume REST API.</p>
         </v-sheet>
         <v-sheet class="mt-8">
           <h2 id="pricing">Pricing</h2>
@@ -54,6 +60,7 @@ const showDrawer = ref(false);
         </v-sheet>
       </div>
       <slot v-else />
+      </v-container>
     </v-main>
 
 
