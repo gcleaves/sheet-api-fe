@@ -1,7 +1,4 @@
 <script setup lang="ts">
-const runtimeConfig = useRuntimeConfig();
-
-onMounted(() => {})
 
 </script>
 
@@ -19,7 +16,7 @@ onMounted(() => {})
     <span class="me-10">
       <NuxtLink to="/pricing">Pricing</NuxtLink>
     </span>
-    <v-btn color="blue-darken-2" :href="runtimeConfig.public.apiBase+'/login'">
+    <v-btn color="blue-darken-2" :href="'/login'">
       Log in with Google
     </v-btn>
   </div>

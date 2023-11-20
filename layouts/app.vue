@@ -13,15 +13,13 @@ if(! data?.value?.sub) {
   navigateTo('/');
 }
 
-onMounted(async () => {})
-
 </script>
 
 <template>
   <v-layout class="rounded rounded-md">
     <v-app-bar>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Sheets API</v-toolbar-title>
+      <v-toolbar-title>Free Sheets API</v-toolbar-title>
       <v-btn href="/logout?redirect=/">
         Logout
       </v-btn>
@@ -39,8 +37,8 @@ onMounted(async () => {})
         <v-list-item to="/app/settings">
           Settings
         </v-list-item>
-        <v-list-item to="/app/billing">
-          Billing
+        <v-list-item to="/app/docs">
+          Docs
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

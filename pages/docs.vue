@@ -1,9 +1,11 @@
 <script setup lang="ts">
+const router = useRouter();
+
 definePageMeta({
   layout: 'web'
 })
 </script>
 
 <template>
-  <h1>Documentation</h1>
+  <Docs />
 </template>

@@ -5,7 +5,6 @@ definePageMeta({
 const timeout = ref(4000);
 const snackbar = ref(false);
 let snackbarText;
-const sheetItems = ref([]);
 const updateSheets = useUpdateSheets();
 const sheets = useSheets();
 
@@ -22,29 +21,46 @@ onMounted(async () => {
     updateSheets.value = true;
   }
 
-  for(let k = sheets.value.length-1; k>=0; k-- ) {
-    sheetItems.value.push({
-      title: sheets.value[k].name,
-      subtitle: sheets.value[k].sheet_id,
-      value: sheets.value[k].id,
-      class: 'ma-3',
-      //href: '/app/sheets/'+data.value[k].id,
-      onclick: ()=>{
-        navigateTo('/app/sheets/'+sheets.value[k].id)
-      }
-    });
-    if(k) sheetItems.value.push({type:'divider'});
-  }
 })
 
 </script>
 
 <template>
-  <v-sheet width="800">
+  <v-sheet max-width="600">
   <h1>Sheets</h1>
   <v-btn block to="/app/sheets/new" class="mb-3 bg-primary">New</v-btn>
-  <v-card :text="sheetItems.length ? null : 'Click New to add Sheets'">
-    <v-list v-if="sheetItems.length"  :items="sheetItems" item-props></v-list>
+  <v-card :text="sheets.length ? null : 'Click New to add Sheets'">
+    <v-list>
+      <template v-for="(sheet, i) in sheets">
+        <v-list-item
+            class="mb-2"
+            :title="sheet.name"
+            :to="'/app/sheets/'+sheet.id"
+        >
+          <v-list-item-subtitle>
+            {{ sheet.uid }}
+          </v-list-item-subtitle>
+
+          <template v-slot:append>
+            <v-badge
+                :color="(sheet.api_keys.read) ? 'green' : 'red'"
+                content="R"
+                inline
+                rounded="0"
+            ></v-badge>
+            <v-badge
+                :color="(sheet.api_keys.write) ? 'green' : 'red'"
+                content="W"
+                inline
+                rounded="0"
+            ></v-badge>
+          </template>
+
+        </v-list-item>
+        <v-divider v-if="sheets.length > i+1"></v-divider>
+      </template>
+
+    </v-list>
   </v-card>
   </v-sheet>
 

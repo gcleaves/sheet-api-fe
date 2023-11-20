@@ -3,7 +3,6 @@ let sheetOriginal = {};
 
 onMounted(() => {
   sheetOriginal = JSON.parse(JSON.stringify(props.sheet));
-  console.log(sheetOriginal)
 })
 
 const router = useRouter();
@@ -11,10 +10,12 @@ const props = defineProps({
   sheet: Object,
   title: String
 });
+const emit = defineEmits(['updated']);
 let snackbarTimeout = 4000;
 const updateSheets = useUpdateSheets();
 const snackbar = ref(false);
 const method = ref('');
+const valid = ref();
 let snackbarText;
 
 async function deleteSheet() {
@@ -24,6 +25,9 @@ async function deleteSheet() {
       method: method.value,
       body: {}
     });
+    router.push('/app/sheets');
+    return;
+
     updateSheets.value = true;
     snackbarText = 'Deleted'
     snackbar.value = true;
@@ -36,6 +40,7 @@ async function deleteSheet() {
 }
 
 async function createSheet() {
+  if(!valid.value) return;
   try {
     let sheetId = '';
     method.value = 'post';
@@ -44,11 +49,18 @@ async function createSheet() {
       sheetId = '/'+props.sheet.id;
       method.value = 'patch';
     }
-    const response = await $fetch('/api/sheets'+sheetId, {
+    const response: any = await $fetch('/api/sheets'+sheetId, {
       method: method.value,
       body: props.sheet
     });
-    props.sheet.value = response;
+    if(method.value==='post') {
+      //console.log(props.sheet.name)
+      router.push('/app/sheets/'+response.id);
+      return;
+    }
+
+    emit('updated', response);
+    sheetOriginal = JSON.parse(JSON.stringify(props.sheet));
 
     updateSheets.value = true;
     snackbarText = 'Saved!'
@@ -66,10 +78,6 @@ function snackbarGone(val: any) {
   if(method.value==='delete') {
     router.push('/app/sheets');
   }
-  if(method.value==='post') {
-    //console.log(props.sheet.name)
-      router.push('/app/sheets/'+props.sheet.value.id);
-  }
 }
 
 function reset() {
@@ -84,18 +92,33 @@ function ondel() {
   console.log('ondel')
 }
 
+const rules = {
+  required: (value: string) => !!value || 'Field is required',
+}
+
 </script>
 
 <template>
   <h1> {{ title }}</h1>
-  <v-sheet width="600" >
-    <v-form @submit.prevent>
+  <v-sheet max-width="600" >
+    <v-form
+        v-model="valid"
+        @submit.prevent
+        validate-on="input"
+    >
+      <v-card class="pl-4 py-2 mb-2" v-if="sheet.uid">
+        Endpoint: <b> /api/sheet/{{ sheet.uid }} </b>
+      </v-card>
+
       <v-text-field
           v-model="sheet.name"
           label="Sheet name"
+          :rules="[rules.required]"
       ></v-text-field>
       <v-text-field
+          aria-required="true"
           v-model="sheet.sheet_id"
+          :rules="[rules.required]"
           label="Sheet Id"
           placeholder="Find it in Google Sheets URL"
       ></v-text-field>
@@ -107,7 +130,7 @@ function ondel() {
           v-model="sheet.api_keys.write"
           label="API Key to Write"
       ></v-text-field>
-      <v-btn @click="createSheet()" type="submit" block class="mt-2 bg-primary">Submit</v-btn>
+      <v-btn :disabled="!valid" @click="createSheet()" type="submit" block class="mt-2 bg-primary">Submit</v-btn>
       <v-btn @click="reset" block class="mt-2">Reset</v-btn>
       <!--v-btn v-if="sheet.id" @click="deleteSheet()" type="submit" block class="mt-6 bg-red">Delete</v-btn-->
       <ConfirmedDeleteButton
@@ -115,7 +138,7 @@ function ondel() {
           @timerExpired="deleteSheet()"
           btClass="mt-2 bg-amber block"
           text="Delete"
-          :timer="3"
+          :timer="2"
       ></ConfirmedDeleteButton>
     </v-form>
   </v-sheet>

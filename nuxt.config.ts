@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   devServer: {
     port: 3333
   },
+  ssr: true,
   modules: [
     '@invictus.codes/nuxt-vuetify'
   ],
@@ -21,12 +22,13 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/login': { redirect: 'http://localhost:3000/login' },
-    '/app': { redirect: '/app/sheets' },
+    //'/app': { redirect: '/app/sheets' },
     '/logout': { proxy: 'http://localhost:3000/logout' },
     '/getAccessLink': { proxy: 'http://localhost:3000/getAccessLink' },
     '/login/check': { proxy: 'http://localhost:3000/login/check' },
     '/httpbin/**': { proxy: 'http://httpbin.org/**'},
     '/api/**': { proxy: 'http://localhost:3000/api/**' },
+    '/app/**': { ssr: false },
   }
 })
 

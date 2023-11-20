@@ -3,22 +3,21 @@ definePageMeta({
   layout: 'app',
 
 })
-let temp = "{}";
-const saJSON = ref(temp);
 const timeout = ref(4000);
 const snackbar = ref(false);
 let snackbarText;
 const items = ['service_account', 'oauth'];
 let { data, pending, error, refresh } = await useFetch('/api/settings');
-if(error) {
+if(error.value) {
   snackbarText = error.value;
   timeout.value = 10000;
   snackbar.value = true;
 }
-
+let temp;
 try {
-  temp = JSON.stringify(data.value.service_account);
+  temp = JSON.stringify(data.value.service_account || {});
 } catch (e) {}
+const saJSON = ref(temp);
 
 
 async function updateSettings() {
@@ -40,10 +39,17 @@ async function elevateAccess() {
       .then((link) => window.location.href = link);
 }
 
+async function removeAccess() {
+  data.value = await $fetch('/api/refreshToken', {
+    method: 'delete',
+    body: {user_id: data.value.id}
+  });
+}
+
 </script>
 
 <template>
-  <v-sheet width="800">
+  <v-sheet max-width="600">
   <h1>Settings</h1>
   <div v-if="data">
     <v-text-field
@@ -72,10 +78,10 @@ async function elevateAccess() {
       ></v-textarea>
     </div>
     <div class="mb-4 d-flex justify-center" v-else>
-      <v-btn @click="elevateAccess" class="mr-6" color="green-darken-2">
+      <v-btn :disabled="data.hasRefreshToken" @click="elevateAccess" class="mr-6" color="green-darken-2">
         Grant Oauth Permissions
       </v-btn>
-      <v-btn color="red-darken-2">
+      <v-btn :disabled="!data.hasRefreshToken" @click="removeAccess"  color="red-darken-2">
         Revoke Oauth Permissions
       </v-btn>
 
