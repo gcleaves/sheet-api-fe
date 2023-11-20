@@ -1,6 +1,6 @@
 <script setup lang="ts">
-
 import {navigateTo} from "nuxt/app";
+
 
 const config = useRuntimeConfig();
 const route = useRoute()

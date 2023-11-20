@@ -1,5 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [{
+        rel:'stylesheet',
+        href:'https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css'
+      },{
+        rel:'stylesheet',
+        href:'https://unpkg.com/@wcj/markdown-to-html/dist/marked.css'
+      }]
+    }
+  },
+  experimental: {
+    componentIslands: true
+  },
   devtools: { enabled: true },
   components: [{
       path: '~/components'
