@@ -1,15 +1,20 @@
 <script setup lang="ts">
 let sheetOriginal = {};
+const origKeys = ref({
+  read: null,
+  write: null
+})
 
 onMounted(() => {
   sheetOriginal = JSON.parse(JSON.stringify(props.sheet));
+  origKeys.value.read = JSON.parse(JSON.stringify(props.sheet.api_keys)).read;
 })
 
-const router = useRouter();
 const props = defineProps({
   sheet: Object,
   title: String
 });
+const router = useRouter();
 const emit = defineEmits(['updated']);
 let snackbarTimeout = 4000;
 const updateSheets = useUpdateSheets();
@@ -17,6 +22,7 @@ const snackbar = ref(false);
 const method = ref('');
 const valid = ref();
 let snackbarText;
+
 
 async function deleteSheet() {
   try {
@@ -38,6 +44,12 @@ async function deleteSheet() {
     snackbarTimeout = 5000;
   }
 }
+
+const apiEndpoint = computed(() => {
+  const base = '/api/sheet/'+props.sheet.uid;
+  const key = (origKeys.value.read) ? '?_x-api-key='+origKeys.value.read : ''
+  return base+key;
+});
 
 async function createSheet() {
   if(!valid.value) return;
@@ -61,6 +73,7 @@ async function createSheet() {
 
     emit('updated', response);
     sheetOriginal = JSON.parse(JSON.stringify(props.sheet));
+    origKeys.value.read = JSON.parse(JSON.stringify(props.sheet.api_keys)).read;
 
     updateSheets.value = true;
     snackbarText = 'Saved!'
@@ -107,7 +120,7 @@ const rules = {
         validate-on="input"
     >
       <v-card class="pl-4 py-2 mb-2" v-if="sheet.uid">
-        Endpoint: <b> /api/sheet/{{ sheet.uid }} </b>
+        Endpoint: <a target="sheet_api" :href="apiEndpoint">{{ apiEndpoint }}</a>
       </v-card>
 
       <v-text-field

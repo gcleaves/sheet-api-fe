@@ -13,9 +13,6 @@ const showDrawer = ref(false);
           <v-list-item to="/">
             Home
           </v-list-item>
-          <v-list-item href="/#pricing">
-            Pricing
-          </v-list-item>
           <v-list-item to="/docs">
             Docs
           </v-list-item>
@@ -41,28 +38,25 @@ const showDrawer = ref(false);
         disable-resize-watcher
     >
       <v-list-item to="/" title="Home"></v-list-item>
-      <v-list-item href="/#pricing" title="Pricing"></v-list-item>
-      <v-list-item link to="/docs" title="Docs"></v-list-item>
+      <v-list-item to="/docs" title="Docs"></v-list-item>
     </v-navigation-drawer>
 
     <v-main>
       <v-container>
-      <div v-if="router.currentRoute.value.name!=='docs'">
-        <v-sheet>
-          <h1>API access to your Google Sheets</h1>
-          <h3>With (some) Privacy!</h3>
-          <p class="mt-2"><a href="https://github.com/gcleaves/sheet-api-be">Open source</a> code that converts your Google Sheet
-            into an easy-to-consume REST API.</p>
+        <v-sheet elevation="3" rounded>
+          <slot />
         </v-sheet>
-        <v-sheet class="mt-8">
-          <h2 id="pricing">Pricing</h2>
-          Free! For now...
-        </v-sheet>
-      </div>
-      <slot v-else />
       </v-container>
     </v-main>
-
-
   </v-app>
 </template>
+
+<style>
+ol, ul {
+  padding-left: 1em;
+}
+h2,h3,h4 {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+</style>

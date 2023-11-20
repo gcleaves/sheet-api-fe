@@ -10,7 +10,6 @@ let sheet: any = data.value;
 updateSheets.value = false;
 
 function uppy(s: any) {
-  console.log('updated', s)
   sheet = s;
 }
 </script>
