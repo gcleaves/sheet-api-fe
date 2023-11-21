@@ -59,4 +59,7 @@ h2,h3,h4 {
   margin-bottom: 5px;
   margin-top: 15px;
 }
+p, h1 {
+  padding-bottom: 15px;
+}
 </style>
