@@ -16,10 +16,16 @@ if(! data?.value?.sub) {
 </script>
 
 <template>
-  <v-layout class="rounded rounded-md">
-    <v-app-bar>
+    <v-app-bar :elevation="1">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Free Sheets API</v-toolbar-title>
+      <v-toolbar-title>
+        <v-img
+            class=""
+            src="/logo.svg"
+            max-width="220"
+        >
+        </v-img>
+      </v-toolbar-title>
       <v-btn href="/logout?redirect=/">
         Logout
       </v-btn>
@@ -30,7 +36,7 @@ if(! data?.value?.sub) {
         v-model="drawer"
         mobile-breakpoint='md'
     >
-      <v-list>
+      <v-list class="mt-1">
         <v-list-item to="/app/sheets">
           Sheets
         </v-list-item>
@@ -43,8 +49,18 @@ if(! data?.value?.sub) {
       </v-list>
     </v-navigation-drawer>
 
-    <v-main style="min-height: 300px;">
-      <NuxtPage />
+    <v-main style="min-height: 300px;" class="">
+      <v-container>
+        <NuxtPage />
+      </v-container>
     </v-main>
-  </v-layout>
+  
+    <v-footer>
+      <div class="px-4 py-2 text-center w-100">
+        <NuxtLink to="privacy">Privacy</NuxtLink>
+        | 
+        <NuxtLink to="terms">Terms</NuxtLink>
+    </div>
+    </v-footer>
+
 </template>

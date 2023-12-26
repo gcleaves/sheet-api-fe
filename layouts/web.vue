@@ -6,8 +6,16 @@ const showDrawer = ref(false);
 </script>
 
 <template>
-  <v-app>
-    <v-app-bar location="top" :elevation="0" title="Free Sheets API">
+    <v-app-bar location="top" :elevation="0">
+      <template v-slot:title>
+        <v-img
+            class=""
+            src="/logo.svg"
+            max-width="220"
+        >
+        </v-img>
+      </template>
+
       <v-list class="d-flex">
         <div v-if="display.smAndUp.value" class="d-flex">
           <v-list-item to="/">
@@ -48,7 +56,14 @@ const showDrawer = ref(false);
         </v-sheet>
       </v-container>
     </v-main>
-  </v-app>
+
+    <v-footer>
+      <div class="px-4 py-2 text-center w-100">
+        <NuxtLink to="privacy">Privacy</NuxtLink>
+         | 
+         <NuxtLink to="terms">Terms</NuxtLink>
+    </div>
+    </v-footer>
 </template>
 
 <style>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {useDisplay} from "vuetify";
+
 definePageMeta({
   layout: 'app',
 
@@ -6,6 +8,7 @@ definePageMeta({
 const timeout = ref(4000);
 const snackbar = ref(false);
 let snackbarText;
+const display = useDisplay();
 const items = ['service_account', 'oauth'];
 let { data, pending, error, refresh } = await useFetch('/api/settings');
 if(error.value) {
@@ -19,6 +22,7 @@ try {
 } catch (e) {}
 const saJSON = ref(temp);
 
+const under400 = computed(() => display.width.value < 400)
 
 async function updateSettings() {
   try {
@@ -77,13 +81,28 @@ async function removeAccess() {
           v-model="saJSON"
       ></v-textarea>
     </div>
-    <div class="mb-4 d-flex justify-center" v-else>
-      <v-btn :disabled="data.hasRefreshToken" @click="elevateAccess" class="mr-6" color="green-darken-2">
-        Grant Oauth Permissions
-      </v-btn>
-      <v-btn :disabled="!data.hasRefreshToken" @click="removeAccess"  color="red-darken-2">
-        Revoke Oauth Permissions
-      </v-btn>
+    <div class="mb-4" v-else>
+      <v-row justify="center">
+        <v-col cols="auto" class="justify-center align-center">
+          <v-btn
+            :block="under400"
+            :disabled="data.hasRefreshToken"
+            @click="elevateAccess"
+            color="green-darken-2"
+          >
+            Grant Oauth
+          </v-btn>
+          <v-btn
+            :block="under400"
+            :disabled="!data.hasRefreshToken"
+            @click="removeAccess"
+            :class="{'ml-6': !under400, 'mt-4': under400}"
+            color="red-darken-2"
+          >
+            Revoke Oauth
+          </v-btn>
+        </v-col>
+      </v-row>
 
     </div>
   </div>
