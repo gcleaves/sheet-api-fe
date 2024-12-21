@@ -1,2 +1,1 @@
-# sheet-api-fe
- 
+See backend README.md for more information at https://github.com/gcleaves/sheet-api-be

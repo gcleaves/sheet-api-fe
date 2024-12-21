@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.API_BASE,
       webBase: process.env.WEB_BASE,
+      serviceAccountEmail: process.env.SERVICE_ACCOUNT_EMAIL,
     }
   },
   routeRules: {

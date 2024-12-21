@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+  //const runtimeConfig = useRuntimeConfig()
 </script>
 
 <template>
@@ -21,9 +21,7 @@
 
     <h3 id="alternate1">Alternate 1</h3>
     <ol>
-      <li>Share your Google Sheet with <a
-          href="mailto:sheets-api-service-account@sheets-api-402810.iam.gserviceaccount.com">sheets-api-service-account@sheets-api-402810.iam.gserviceaccount.com</a>
-        .
+      <li>Share your Google Sheet with {{ $config.public.serviceAccountEmail }} .
       </li>
       <li>Go to this app’s Sheets section and click New. Add the Google Sheet ID and save.</li>
       <li>Visit the newly created API endpoint. You should see your Google Sheet in JSON format.</li>
