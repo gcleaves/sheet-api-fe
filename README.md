@@ -1,1 +1,1 @@
-See backend README.md for more information at https://github.com/gcleaves/sheet-api-be
+See https://github.com/gcleaves/sheet-api
